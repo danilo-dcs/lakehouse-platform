@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+  // "baseUrl": "."
+  // "paths": {
+  //   "@configs/*": ["configs/*"],
+  //   "@assets/*": ["src/assets/*"],
+  //   "@components/*": ["src/components/*"],
+  //   "@views/*": ["src/views/*"],
+  //   "@stores/*": ["src/stores/*"]
+  // }
+}

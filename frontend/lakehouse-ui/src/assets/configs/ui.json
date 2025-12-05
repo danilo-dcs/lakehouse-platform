@@ -1,0 +1,11 @@
+{
+  "primary_color": "#3886c2",
+  "footer_logos": [{ "logo_name": "", "logo_path": "src/assets/logos", "linked_url": "" }],
+  "landing_page_title": "Lakehouse Infra",
+  "landing_page_background_image": {
+    "background_image_file_path": "src/assets/img",
+    "background_image_file_name": ""
+  },
+  "landing_page_text": "The platform to manage your project/research data.",
+  "tab_name": "lakehouse"
+}

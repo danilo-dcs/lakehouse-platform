@@ -1,0 +1,111 @@
+services:
+  couchbase:
+    image: couchbase
+    hostname: couchbase
+    container_name: couchbase
+    ports:
+      - 8091:8091 # couchbase admin client
+      - 8092:8092 # couchbase query client
+      - 8093:8093 # couchbase index service
+      - 8094:8094 # couchbase query service
+      - 11210:11210 # client data access
+      - 18091:18091 # couchbase admin client https
+    restart: always
+    environment:
+      COUCHBASE_ADMINISTRATOR_USERNAME: admin
+      COUCHBASE_ADMINISTRATOR_PASSWORD: admin1234
+    networks:
+      - couchbase-network
+      - app-network
+    volumes:
+      - couchbase-data:/opt/couchbase/var
+      - ./couchbase/scripts:/scripts
+    entrypoint: ['bash', '/scripts/custom_entrypoint.sh']
+
+  passport-broker:
+    container_name: passport-broker
+    image: ga4gh/ga4gh-starter-kit-passport-broker:0.0.2
+    ports:
+      - 4501:4501
+    volumes:
+      # - $HOME/docker_volumes/passport_broker/config:/config
+      - passport_usr_data:/usr
+    networks:
+      - app-network
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    volumes:
+      - ./.env:/app/.env
+    networks:
+      - app-network
+    depends_on:
+      - couchbase
+      - passport-broker
+
+  frontend:
+    build:
+      context: ./frontend/lakehouse-ui/
+      dockerfile: Dockerfile
+    container_name: frontend
+    networks:
+      app-network:
+        aliases:
+          - frontend.daniloapp.com
+
+    depends_on:
+      - backend
+    expose:
+      - '80'
+    ports:
+      - '8080:80'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:80']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx-server:
+    image: nginx:stable-alpine
+    container_name: nginx-server
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx/sites-available/lakehouse.conf:/etc/nginx/conf.d/lakehouse.conf
+      - ./nginx/proxy_params:/etc/nginx/proxy_params
+      - /dev/null:/etc/nginx/conf.d/default.conf #to fill the defaul.conf with null to prevent conflicst with lakehouse.conf
+    depends_on:
+      - frontend
+      - backend
+      - couchbase
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+  couchbase-network:
+    driver: bridge
+
+volumes:
+  passport_usr_data:
+    driver: local
+  couchbase-data:
+    driver: local
+
+  # dremio:
+  #   image: dremio/dremio-oss:latest
+  #   user: root
+  #   ports:
+  #     - 9047:9047 # dremio ui
+  #     - 31010:31010 # Dremio JDBC/ODBC interface,
+  #     - 45678:45678 # internal comunication-distributed
+  #     - 32010:32010 # Dremio's data reflection (acceleration) services
+  #   volumes:
+  #     - $HOME/docker_volumes/dremio:/opt/dremio/data

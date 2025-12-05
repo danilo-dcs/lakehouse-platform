@@ -1,0 +1,4 @@
+{
+  "lakehouse_api_url": "https://lakehouse.pathotrack.health/api",
+  "couchbase_url": "https://lakehouse-db.pathotrack.health"
+}

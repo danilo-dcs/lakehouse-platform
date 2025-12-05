@@ -1,0 +1,135 @@
+<script setup lang="ts">
+import Avatar from 'primevue/avatar'
+import Button from 'primevue/button'
+import Menu from 'primevue/menu'
+
+import { computed, ref, watch } from 'vue'
+import { RouterView, RouterLink, useRouter } from 'vue-router'
+import inform_logo from '@/assets/img/inform_logo.png'
+import dsi_logo from '@/assets/img/dsi_logo.png'
+
+import { useUserStore } from '@/stores/userStore'
+import { apiRequestHandler } from './shared/api/apiRequestHandler'
+
+const router = useRouter()
+
+const userStore = useUserStore()
+
+const user = computed(() => userStore.email)
+
+const userInitial = computed(() => user.value?.toUpperCase().at(0) ?? '')
+
+const logout = async () => {
+  await apiRequestHandler(`/auth/logout`, 'POST')
+  userStore.clearUser()
+  router.push('/login')
+}
+
+const isHeaderVisible = computed(() => router.currentRoute.value.name !== 'login')
+
+const menu = ref()
+const items = ref([
+  {
+    label: 'Settings',
+    items: [
+      {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        action: () => logout(),
+      },
+    ],
+  },
+])
+
+const toggle = (event: any) => {
+  menu.value.toggle(event)
+}
+</script>
+
+<template>
+  <div class="app-container flex flex-col min-h-screen w-screen overflow-x-hidden">
+    <!-- Header -->
+    <header
+      v-if="isHeaderVisible"
+      class="bg-white shadow-md px-8 py-3 flex justify-between items-center border-b border-gray-200 w-full"
+    >
+      <div class="flex items-center space-x-3">
+        <RouterLink
+          to="/"
+          class="text-xl font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200"
+        >
+          <i class="pi pi-home text-primary text-xl mr-2"></i>
+          <span>Data Lakehouse</span>
+        </RouterLink>
+      </div>
+
+      <div class="flex items-center space-x-5">
+        <div class="text-right hidden sm:block">
+          <div class="font-medium text-gray-800">{{ user }}</div>
+          <div class="text-sm text-gray-500">Logged in</div>
+        </div>
+
+        <Avatar
+          :label="userInitial"
+          class="bg-primary text-white font-semibold"
+          size="medium"
+          shape="circle"
+        />
+
+        <div class="card flex justify-center">
+          <Button
+            type="button"
+            icon="pi pi-cog"
+            size="small"
+            rounded
+            variant="outlined"
+            @click="toggle"
+            aria-haspopup="true"
+            aria-controls="overlay_menu"
+            class="w-full border-none bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 shadow-md active:scale-95 transition duration-150"
+            v-tooltip.bottom="'Settings'"
+          />
+          <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
+            <template #item="{ item }">
+              <a
+                @click="item.action"
+                class="flex items-center px-3 py-2 rounded-lg transition-all duration-300 ease-in-out hover:bg-blue-100 hover:text-blue-700 active:scale-95 active:bg-blue-200 cursor-pointer select-none"
+              >
+                <span :class="[item.icon, 'text-primary group-hover:text-inherit']" />
+                <span :class="['ml-2', { 'font-semibold': item.items }]">{{ item.label }}</span>
+              </a>
+            </template>
+          </Menu>
+        </div>
+
+        <!-- <Button
+          class="bg-black hover:bg-red-600 border-none text-white p-2 rounded-full transition-all duration-150"
+          icon="pi pi-sign-out"
+          @click="logout"
+          v-tooltip.bottom="'Logout'"
+        /> -->
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="flex-1 w-full h-full bg-stone-100 overflow-hidden">
+      <RouterView />
+    </main>
+
+    <!-- Footer -->
+    <footer
+      v-if="isHeaderVisible"
+      class="bg-gray-200 w-full p-8 text-center text-sm text-gray-700 flex flex-col items-center gap-y-6"
+    >
+      <div class="flex flex-row items-center gap-x-20">
+        <img :src="inform_logo" alt="Logo" class="h-16" />
+        <img :src="dsi_logo" alt="Logo" class="h-16" />
+      </div>
+      <div>
+        Contact:
+        <a href="mailto:inform@gmail.com" class="text-primary hover:underline">inform@gmail.com</a>
+      </div>
+      <div>© {{ new Date().getFullYear() }} INFORM Africa Hub. All rights reserved.</div>
+    </footer>
+  </div>
+</template>

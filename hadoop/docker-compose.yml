@@ -1,0 +1,114 @@
+networks:
+  hadoop-network:
+    driver: bridge # or overlay for swarm or kub
+
+services:
+  namenode:
+    image: apache/hadoop:3.3.5
+    # build:
+    #   context: ./hadoop/namenode/
+    #   dockerfile: Dockerfile
+    hostname: namenode
+    command: ['hdfs', 'namenode']
+    ports:
+      - 9870:9870 # HDFS NameNode Web UI
+      - 8020:8020 # HDFS NameNode IPC (Inter-Process Communication) used by the spark nodes on the same network
+      - 9000:9000 # Alternative HDFS NameNode IPC (usend in older hadoop versions)
+      - 50070:50070 # webHDFS api
+    env_file:
+      - ./hadoop/hadoop.conf
+    environment:
+      ENSURE_NAMENODE_DIR: '/tmp/hadoop-root/dfs/name'
+    volumes:
+      - $HOME/docker_volumes/hadoop/namenode:/tmp
+    networks:
+      - hadoop-network
+    # deploy:
+    #   endpoint_mode: dnsrr
+    #   mode: global # In Docker Swarm, global mode ensures that exactly one instance of the service runs on every available node in the swarm.
+
+  datanode1:
+    image: apache/hadoop:3.3.5
+    # build:
+    #   context: ./hadoop/datanode/
+    #   dockerfile: Dockerfile
+    hostname: datanode1
+    command: ['hdfs', 'datanode']
+    env_file:
+      - ./hadoop/hadoop.conf
+    ports:
+      - 9864:9864 # HDFS DataNode Web Ui
+    networks:
+      - hadoop-network
+    depends_on:
+      - namenode
+    # deploy:
+    #   mode: global
+
+  # datanode2:
+  #   image: apache/hadoop:3.3.5
+  #   build:
+  #     context: ./hadoop/datanode/
+  #     dockerfile: Dockerfile
+  #   hostname: datanode2
+  #   command: ['hdfs', 'datanode']
+  #   environment:
+  #     - DFS_DATANODE_HTTP_ADDRESS=0.0.0.0:9876
+  #   env_file:
+  #     - ./hadoop/hadoop.conf
+  #   ports:
+  #     - 9876:9876 # HDFS DataNode Web Ui
+
+  #   networks:
+  #     - hadoop-network
+  #   depends_on:
+  #     - datanode1
+  #     - namenode
+  # # deploy:
+  # #   mode: global
+
+  resource-node-manager:
+    image: apache/hadoop:3.3.5
+    # build:
+    #   context: ./hadoop/resource_manager/
+    #   dockerfile: Dockerfile
+    hostname: resourcenodemanager
+    command:
+      - bash
+      - -c
+      - |
+        yarn resourcemanager
+        yarn nodemanager
+    ports:
+      - 8088:8088 # YARN ResourceManager Web UI
+    env_file:
+      - ./hadoop/hadoop.conf
+    networks:
+      - hadoop-network
+    depends_on:
+      - namenode
+      - datanode1
+      # - datanode2
+    # deploy:
+    #   mode: global
+
+  # resourcemanager:
+  #   image: apache/hadoop:3.3.5
+  #   hostname: resourcemanager
+  #   command: ['yarn', 'resourcemanager']
+  #   ports:
+  #     - 8088:8088
+  #   env_file:
+  #     - ./hadoop/hadoop.conf
+  #   volumes:
+  #     - ./test.sh:/opt/test.sh
+  #   networks:
+  #     - hadoop-network
+
+  # nodemanager:
+  #   image: apache/hadoop:3.3.5
+  #   command: ['yarn', 'nodemanager']
+  #   env_file:
+  #     - ./hadoop/hadoop.conf
+  #   networks:
+  # - hadoop-network

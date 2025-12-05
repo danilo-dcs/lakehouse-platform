@@ -1,0 +1,16 @@
+# to Submitt a python script
+
+curl -X POST http://localhost:6066/v1/submissions/create \
+--header "Content-Type: application/json" \
+--data '{
+  "action": "CreateSubmissionRequest",
+  "appArgs": ["/opt/bitnami/spark/scripts/your_pyspark_script.py"],
+  "appResource": "local:///opt/bitnami/spark/python/lib/pyspark.zip",
+  "clientSparkVersion": "3.5.1",
+  "mainClass": "org.apache.spark.deploy.PythonRunner",
+  "environmentVariables": {},
+  "sparkProperties": {
+    "spark.submit.deployMode": "cluster",
+    "spark.master": "spark://spark-master:7077"
+  }
+}'

@@ -1,0 +1,88 @@
+volumes:
+  namenode-data:
+  datanode-data:
+  krb-data:
+
+networks:
+  hadoop-net:
+    external: true
+
+services:
+  kerberos:
+    image: ubuntu/krb5-kdc
+    container_name: kerberos
+    hostname: kerberos
+    networks:
+      - kerberos-net
+    environment:
+      - REALM=HADOOP.COM
+      - DOMAIN_REALM=hadoop.com
+      - KADMIN_PRINCIPAL=kerberosadmin
+      - KADMIN_PASSWORD=admin12345
+    ports:
+      - '749:749'
+      - '464:464'
+      - '88:88'
+    volumes:
+      - ./krb5.conf:/etc/krb5.conf
+      - ./krb-data:/var/lib/krb5kdc
+
+  namenode:
+    image: apache/hadoop:3.3.5
+    hostname: namenode
+    command: ['hdfs', 'namenode']
+    ports:
+      - 9870:9870 # HDFS NameNode Web UI
+      - 8020:8020 # HDFS NameNode IPC (Inter-Process Communication) used by the spark nodes on the same network
+      - 9000:9000 # Alternative HDFS NameNode IPC (usend in older hadoop versions)
+      - 50070:50070 # webHDFS api
+    env_file:
+      - ./hadoop/hadoop.conf
+    environment:
+      ENSURE_NAMENODE_DIR: '/tmp/hadoop-root/dfs/name'
+    volumes:
+      - $HOME/docker_volumes/hadoop/namenode:/tmp
+    networks:
+      - hadoop-network
+    depends_on:
+      - kerberos
+    # deploy:
+    #   endpoint_mode: dnsrr
+    #   mode: global # In Docker Swarm, global mode ensures that exactly one instance of the service runs on every available node in the swarm.
+
+  datanode1:
+    image: apache/hadoop:3.3.5
+    hostname: datanode1
+    command: ['hdfs', 'datanode']
+    env_file:
+      - ./hadoop/hadoop.conf
+    ports:
+      - 9864:9864 # HDFS DataNode Web Ui
+    networks:
+      - hadoop-network
+    depends_on:
+      - namenode
+    # deploy:
+    #   mode: global
+
+  resource-node-manager:
+    image: apache/hadoop:3.3.5
+    hostname: resourcenodemanager
+    command:
+      - bash
+      - -c
+      - |
+        yarn resourcemanager
+        yarn nodemanager
+    ports:
+      - 8088:8088 # YARN ResourceManager Web UI
+    env_file:
+      - ./hadoop/hadoop.conf
+    networks:
+      - hadoop-network
+    depends_on:
+      - namenode
+      - datanode1
+      # - datanode2
+    # deploy:
+    #   mode: global

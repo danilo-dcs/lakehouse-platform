@@ -1,0 +1,26 @@
+services:
+  kerberos:
+    image: ubuntu/krb5-kdc
+    container_name: kerberos
+    hostname: kerberos
+    networks:
+      - hadoop-net
+    environment:
+      - REALM=HADOOP.COM
+      - DOMAIN_REALM=hadoop.com
+      - KADMIN_PRINCIPAL=kerberosadmin
+      - KADMIN_PASSWORD=admin12345
+    ports:
+      - '749:749'
+      - '464:464'
+      - '88:88'
+    volumes:
+      - ./krb5.conf:/etc/krb5.conf
+      - ./krb-data:/var/lib/krb5kdc
+
+volumes:
+  krb-data:
+
+networks:
+  hadoop-net:
+    external: true

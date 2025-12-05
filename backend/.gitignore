@@ -1,0 +1,12 @@
+downloads
+
+*env
+*venv
+
+**/env
+**/venv
+
+uploads
+
+__pycache__
+**/__pycache__
