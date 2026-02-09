@@ -178,10 +178,10 @@ const loginOnSubmit = async (): Promise<void> => {
           <span class=""> for Research & Public Health </span>
         </h2>
 
-        <p class="max-w-xl text-lg">
-          OpenHealth Lake provides a secure, scalable environment for managing and sharing
-          structured and unstructured health data. It serve as a suplementary tool for data
-          management and can be adapted to various use cases.
+        <p class="max-w-8xl text-lg">
+          OpenHealth Lake provides a secure and scalable environment for managing structured and
+          unstructured health data. It serve as a suplementary tool for data management and can be
+          adapted to various use cases.
         </p>
 
         <ul class="space-y-3 mt-6">
@@ -279,7 +279,7 @@ const loginOnSubmit = async (): Promise<void> => {
           class="flex items-center space-x-2 text-gray-500 hover:text-[#2a95ea] transition-colors"
         >
           <i class="pi pi-github text-base"></i>
-          <span>View Source Code</span>
+          <span>View Source Code and Platform Details</span>
         </a>
       </div>
     </footer>
