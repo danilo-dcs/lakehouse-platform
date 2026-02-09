@@ -42,9 +42,9 @@ const toast = useToast()
 
 const features = ref([
   { label: 'Passport-based Access Control', icon: 'pi pi-shield' },
-  { label: 'Data Governance', icon: 'pi pi-server' },
-  { label: 'Interoperability', icon: 'pi pi-share-alt' },
-  { label: 'Open-source', icon: 'pi pi-lock-open' },
+  { label: 'Data Storage', icon: 'pi pi-database' },
+  { label: 'Data Cataloguing', icon: 'pi pi-book' },
+  { label: 'Data Sharing', icon: 'pi pi-share-alt' },
 ])
 // Reactive references with types
 const formValues = ref({
@@ -170,10 +170,7 @@ const loginOnSubmit = async (): Promise<void> => {
     <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
       <!-- left : Platform Info -->
       <div class="space-y-5">
-        <Chip
-          label="Health data management platform"
-          class="bg-primary text-white font-bold border-none"
-        />
+        <Chip label="Open-source platform" class="bg-primary text-white font-bold border-none" />
 
         <h2 class="text-4xl font-bold leading-tight">
           Secure Health Data Governance
