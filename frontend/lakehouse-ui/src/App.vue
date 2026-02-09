@@ -121,17 +121,24 @@ const toggle = (event: any) => {
     <!-- Footer -->
     <footer
       v-if="isHeaderVisible"
-      class="bg-gray-200 w-full p-8 text-center text-sm text-gray-700 flex flex-col items-center gap-y-6"
+      class="bg-gray-200 w-full p-8 text-center text-sm text-gray-700 flex flex-col items-center gap-y-7"
     >
+      <div class="font-semibold text-gray-700">Powered by:</div>
       <div class="flex flex-row items-center gap-x-20">
         <img :src="inform_logo" alt="Logo" class="h-16" />
         <img :src="dsi_logo" alt="Logo" class="h-16" />
       </div>
-      <div>
-        Contact:
-        <a href="mailto:inform@gmail.com" class="text-primary hover:underline">inform@gmail.com</a>
+      <div class="flex flex-col items-center space-y-2">
+        <a
+          href="https://github.com/danilo-dcs/lakehouse-platform"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center space-x-2 text-gray-500 hover:text-[#2a95ea] transition-colors"
+        >
+          <i class="pi pi-github text-base"></i>
+          <span>View Source Code and Platform Details</span>
+        </a>
       </div>
-      <div>© {{ new Date().getFullYear() }} INFORM Africa Hub. All rights reserved.</div>
     </footer>
   </div>
 </template>
