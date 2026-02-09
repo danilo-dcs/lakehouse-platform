@@ -254,7 +254,7 @@ const loginOnSubmit = async (): Promise<void> => {
               <Button
                 class="w-full bg-gray-800 text-white border-none"
                 @click="openSubscribeModal()"
-                label="Subscribe"
+                label="Sign Up"
               />
             </div>
           </div>
