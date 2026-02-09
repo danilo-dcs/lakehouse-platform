@@ -4,11 +4,16 @@ import InputGroup from 'primevue/inputgroup'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Button from 'primevue/button'
 import Divider from 'primevue/divider'
+import Chip from 'primevue/chip'
 import Toast from 'primevue/toast'
 import Password from 'primevue/password'
 import DynamicDialog from 'primevue/dynamicdialog'
 
 import uiConf from '../assets/configs/ui.json'
+
+import logo from '../assets/img/lakehouse-logo.png'
+
+import backgroundImage from '@/assets/img/landing-background.png'
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -17,7 +22,6 @@ import { useDialog } from 'primevue/usedialog'
 
 import type { UiConfigs } from '@/shared/interfaces/configs/UiConfigs'
 import type { LoginResponse } from '@/shared/interfaces/http/LoginResponse'
-import type { SourceConfigs } from '@/shared/interfaces/configs/SourceConfigs'
 
 import SubscriptionForm from '@/components/login/SubscriptionForm.vue'
 import PasswordRecoveryForm from '@/components/login/PasswordRecoveryForm.vue'
@@ -36,6 +40,12 @@ const pageText = ref(uiSettings.landing_page_text)
 
 const toast = useToast()
 
+const features = ref([
+  { label: 'Passport-based Access Control', icon: 'pi pi-shield' },
+  { label: 'Data Governance', icon: 'pi pi-server' },
+  { label: 'Interoperability', icon: 'pi pi-share-alt' },
+  { label: 'Open-source', icon: 'pi pi-lock-open' },
+])
 // Reactive references with types
 const formValues = ref({
   email: '',
@@ -138,81 +148,150 @@ const loginOnSubmit = async (): Promise<void> => {
 </script>
 
 <template>
-  <div
-    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#3986c2] via-[#63a4da] to-[#ffffff] relative overflow-hidden"
-  >
+  <div class="min-h-screen flex items-center justify-center relative overflow-hidden px-6">
     <Toast />
     <DynamicDialog />
 
-    <!-- Subtle Glow Overlay -->
+    <!-- White Base -->
+    <div class="absolute inset-0 bg-white"></div>
+
+    <!-- Background Image -->
     <div
-      class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.1),_transparent_50%)]"
+      class="absolute inset-0 bg-cover bg-center opacity-100"
+      :style="{
+        backgroundImage: `url(${backgroundImage})`,
+      }"
     ></div>
 
-    <div
-      class="relative z-10 bg-white shadow-2xl rounded-2xl p-10 w-[90%] max-w-md flex flex-col items-center animate-fade-in"
-    >
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold text-[#3986c2]">{{ pageTitle }}</h2>
-        <Divider class="my-3" />
-        <h1 class="text-gray-700 text-xl font-medium mt-2">{{ pageText }}</h1>
-        <p class="text-gray-500 text-sm mt-3">Welcome! Please log into your account</p>
+    <!-- Opacity Overlay Layer -->
+    <div class="absolute inset-0 bg-white/70"></div>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+      <!-- left : Platform Info -->
+      <div class="space-y-5">
+        <Chip
+          label="Health data management platform"
+          class="bg-primary text-white font-bold border-none"
+        />
+
+        <h2 class="text-4xl font-bold leading-tight">
+          Secure Health Data Governance
+          <br />
+          <span class=""> for Research & Public Health </span>
+        </h2>
+
+        <p class="max-w-xl text-lg">
+          OpenHealth Lake provides a secure, scalable environment for managing and sharing
+          structured and unstructured health data. It serve as a suplementary tool for data
+          management and can be adapted to various use cases.
+        </p>
+
+        <ul class="space-y-3 mt-6">
+          <li v-for="feature in features" :key="feature.label" class="flex items-center">
+            <i :class="feature.icon" class="mr-3 text-primary"></i>
+            {{ feature.label }}
+          </li>
+        </ul>
       </div>
 
-      <div class="w-full space-y-5">
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-envelope text-[#3986c2]"></i>
-          </InputGroupAddon>
-          <InputText
-            id="email"
-            v-model="formValues.email"
-            class="w-full border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3986c2]"
-            type="email"
-            placeholder="Email"
-            required
-          />
-        </InputGroup>
+      <!-- RIGHT SIDE : Login Card -->
+      <div class="flex justify-center lg:justify-end">
+        <div
+          class="bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-md flex flex-col items-center"
+        >
+          <!-- Logo -->
+          <div class="text-center mb-8">
+            <div class="flex items-center justify-center">
+              <img :src="logo" alt="Lakehouse Logo" class="w-10 h-10 mr-2 object-contain" />
+              <h3 class="text-3xl font-bold">OpenHealth</h3>
+              <h3 class="text-3xl font-bold text-primary">Lake</h3>
+            </div>
 
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-lock text-[#3986c2]"></i>
-          </InputGroupAddon>
-          <Password
-            id="password"
-            v-model="formValues.password"
-            class="w-full border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3986c2]"
-            placeholder="Password"
-            toggleMask
-            :feedback="false"
-            required
-          />
-        </InputGroup>
+            <p class="text-gray-500 text-sm mt-3">Sign in to your workspace</p>
+          </div>
 
-        <div class="flex justify-end">
-          <Button
-            variant="text"
-            size="small"
-            @click="openPasswordRecoveryModal()"
-            label="Forgot Password?"
-          />
-        </div>
+          <!-- Form -->
+          <div class="w-full space-y-5">
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-envelope text-primary"></i>
+              </InputGroupAddon>
+              <InputText
+                v-model="formValues.email"
+                type="email"
+                placeholder="Email"
+                class="w-full"
+              />
+            </InputGroup>
 
-        <div class="space-y-4 mt-12">
-          <Button
-            class="w-full border-none bg-[#3986c2] hover:bg-[#4a92cf] text-white font-semibold py-2 rounded-md shadow-md active:scale-95 transition duration-150"
-            @click="loginOnSubmit"
-            label="Login"
-          />
-          <Button
-            class="w-full border-none bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 rounded-md shadow-md active:scale-95 transition duration-150"
-            @click="openSubscribeModal()"
-            label="Subscribe"
-          />
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-lock text-primary"></i>
+              </InputGroupAddon>
+              <Password
+                v-model="formValues.password"
+                placeholder="Password"
+                toggleMask
+                :feedback="false"
+                class="w-full"
+              />
+            </InputGroup>
+
+            <div class="flex justify-end">
+              <Button
+                variant="text"
+                size="small"
+                @click="openPasswordRecoveryModal()"
+                label="Forgot Password?"
+              />
+            </div>
+
+            <div class="space-y-4 pt-6">
+              <Button
+                class="w-full bg-primary text-white border-none"
+                @click="loginOnSubmit"
+                label="Login"
+              />
+
+              <Button
+                class="w-full bg-gray-800 text-white border-none"
+                @click="openSubscribeModal()"
+                label="Subscribe"
+              />
+            </div>
+          </div>
         </div>
       </div>
-
-      <p class="text-gray-500 text-sm mt-8">© {{ new Date().getFullYear() }} INFORM Africa Hub</p>
     </div>
+
+    <!-- Footer -->
+    <footer class="absolute bottom-6 w-full text-center text-sm text-gray-600">
+      <div class="flex flex-col items-center space-y-2">
+        <!-- Powered By -->
+        <div>
+          Powered by
+          <span class="font-semibold text-[#2a95ea]"> INFORM Africa Hub </span>
+        </div>
+
+        <!-- GitHub Link -->
+        <a
+          href="https://github.com/danilo-dcs/lakehouse-platform"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center space-x-2 text-gray-500 hover:text-[#2a95ea] transition-colors"
+        >
+          <i class="pi pi-github text-base"></i>
+          <span>View Source Code</span>
+        </a>
+      </div>
+    </footer>
   </div>
 </template>
+
+<style scoped>
+.pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' fill-opacity='0.12' d='M35 20h10v15h15v10H45v15H35V45H20V35h15z'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+</style>

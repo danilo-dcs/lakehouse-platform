@@ -11,6 +11,8 @@ import dsi_logo from '@/assets/img/dsi_logo.png'
 import { useUserStore } from '@/stores/userStore'
 import { apiRequestHandler } from './shared/api/apiRequestHandler'
 
+import logo from './assets/img/lakehouse-logo.png'
+
 const router = useRouter()
 
 const userStore = useUserStore()
@@ -53,13 +55,13 @@ const toggle = (event: any) => {
       v-if="isHeaderVisible"
       class="bg-white shadow-md px-8 py-3 flex justify-between items-center border-b border-gray-200 w-full"
     >
-      <div class="flex items-center space-x-3">
+      <div>
         <RouterLink
           to="/"
-          class="text-xl font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200"
+          class="flex items-center space-x-2 text-xl font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200"
         >
-          <i class="pi pi-home text-primary text-xl mr-2"></i>
-          <span>Data Lakehouse</span>
+          <img :src="logo" alt="Lakehouse Home" class="w-7 h-7 object-contain" />
+          <span>Home</span>
         </RouterLink>
       </div>
 
