@@ -180,7 +180,7 @@ const loginOnSubmit = async (): Promise<void> => {
 
         <p class="max-w-8xl text-lg">
           OpenHealth Lake provides a secure and scalable environment for managing structured and
-          unstructured health data. It serves as a suplementary tool for data management and can be
+          unstructured health data. It serves as a supplementary tool for data management and can be
           adapted to various use cases.
         </p>
 
