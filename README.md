@@ -40,7 +40,7 @@ Setting user permissions to the volume's folder:
 sudo chown -R $USER:$USER $HOME/docker_volumes && sudo chmod -R 755 $HOME/docker_volumes
 ```
 
-Make sure to install NGINX following the set up steps specified on the nginx folder: [link](./nginx/README.md)
+Make sure to install NGINX following the set up steps specified on the [nginx folder](./nginx/README.md)
 
 ## Lauching as Standalone Platform
 

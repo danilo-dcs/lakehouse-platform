@@ -10,7 +10,7 @@
 
 # Setup and run
 
-Please check the `src/.env.example` for a grasp of all the inputs needed to configure the Lakehouse API. Once you have all the details nedeed, do:
+Please check the `src/.env.example` for a template of all the inputs needed to configure the Lakehouse API. Once you have all the details nedeed, do:
 
 1. Copy the file `.env.example` and paste it under the name of `.env` in the root (backend) directory
 2. Fill all the environment variables with the appropriate values
