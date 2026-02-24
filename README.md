@@ -1,6 +1,6 @@
 # Lakehouse Platform (OpenHealthLake)
 
-This lakehouse platfrom is fully open-source and adaptable. It was built to help low-resourced research groups and health initiatives on addressing the challenges adhered from heterogeneous data management, data sharing and data governance. It was implemented as part of a MSc in Computer Science project, supported by the Stellenbosch University (South Africa), the [Centre for Epidemic Response and Innovation](https://ceri.org.za/), and [INFORM Africa Research Study Group](https://inform-africa.org/).
+This lakehouse platfrom is fully open-source and adaptable. It was built to help low-resourced research groups and health initiatives on addressing the challenges adhered from heterogeneous data management, data sharing and data governance. It was implemented as part of a MSc in Computer Science project, supported by the Stellenbosch University (South Africa), the [Centre for Epidemic Response and Innovation](https://ceri.org.za/), and the [INFORM Africa Research Study Group](https://inform-africa.org/).
 
 It is important to highlight that this is a prototype platform which is still under development. It can be used as a supplementary tool to support data storage, data sharing, and data governance. Efforts to implement tools to support workflows and analytical processing analysis will be put in to expant this platform in the near future. 
 
