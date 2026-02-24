@@ -7,7 +7,7 @@ import { computed, ref, watch } from 'vue'
 import { RouterView, RouterLink, useRouter } from 'vue-router'
 import inform_logo from '@/assets/img/inform_logo.png'
 import dsi_logo from '@/assets/img/dsi_logo.png'
-import ceri_logo from '@/assets/img/ceri_logo.png'
+import ceri_logo from '@/assets/img/CERI_logo.png'
 import comp2bio_logo from '@/assets/img/comp2bio_logo.png'
 import ita_logo from '@/assets/img/ita_logo.png'
 
