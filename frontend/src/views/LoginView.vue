@@ -15,6 +15,12 @@ import logo from '../assets/img/lakehouse-logo.png'
 
 import backgroundImage from '@/assets/img/landing-background.png'
 
+import inform_logo from '@/assets/img/inform_logo.png'
+import dsi_logo from '@/assets/img/dsi_logo.png'
+import ceri_logo from '@/assets/img/ceri_logo.png'
+import comp2bio_logo from '@/assets/img/comp2bio_logo.png'
+import ita_logo from '@/assets/img/ita_logo.png'
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
@@ -264,11 +270,19 @@ const loginOnSubmit = async (): Promise<void> => {
 
     <!-- Footer -->
     <footer class="absolute bottom-6 w-full text-center text-sm text-gray-600">
-      <div class="flex flex-col items-center space-y-2">
+      <div class="flex flex-col items-center space-y-10">
         <!-- Powered By -->
         <div>
-          Powered by
-          <span class="font-semibold text-[#2a95ea]"> INFORM Africa Hub </span>
+          <div class="text-gray-700 mb-4">Powered by:</div>
+          <div class="flex flex-row items-center gap-x-7">
+            <img :src="inform_logo" alt="Logo" class="h-16" />
+            <img :src="dsi_logo" alt="Logo" class="h-15" />
+            <img :src="ceri_logo" alt="Logo" class="h-20" />
+            <img :src="ita_logo" alt="Logo" class="h-14" />
+            <img :src="comp2bio_logo" alt="Logo" class="h-7" />
+          </div>
+          <!-- Powered by
+          <span class="font-semibold text-[#2a95ea]"> INFORM Africa Hub </span> -->
         </div>
 
         <!-- GitHub Link -->

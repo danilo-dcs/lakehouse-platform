@@ -9,6 +9,7 @@ import inform_logo from '@/assets/img/inform_logo.png'
 import dsi_logo from '@/assets/img/dsi_logo.png'
 import ceri_logo from '@/assets/img/ceri_logo.png'
 import comp2bio_logo from '@/assets/img/comp2bio_logo.png'
+import ita_logo from '@/assets/img/ita_logo.png'
 
 import { useUserStore } from '@/stores/userStore'
 import { apiRequestHandler } from './shared/api/apiRequestHandler'
@@ -130,6 +131,7 @@ const toggle = (event: any) => {
         <img :src="inform_logo" alt="Logo" class="h-16" />
         <img :src="dsi_logo" alt="Logo" class="h-16" />
         <img :src="ceri_logo" alt="Logo" class="h-16" />
+        <img :src="ita_logo" alt="Logo" class="h-14" />
         <img :src="comp2bio_logo" alt="Logo" class="h-16" />
       </div>
       <div class="flex flex-col items-center space-y-2">
