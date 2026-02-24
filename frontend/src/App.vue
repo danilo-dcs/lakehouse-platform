@@ -7,6 +7,8 @@ import { computed, ref, watch } from 'vue'
 import { RouterView, RouterLink, useRouter } from 'vue-router'
 import inform_logo from '@/assets/img/inform_logo.png'
 import dsi_logo from '@/assets/img/dsi_logo.png'
+import ceri_logo from '@/assets/img/ceri_logo.png'
+import comp2bio_logo from '@/assets/img/comp2bio_logo.png'
 
 import { useUserStore } from '@/stores/userStore'
 import { apiRequestHandler } from './shared/api/apiRequestHandler'
@@ -124,9 +126,11 @@ const toggle = (event: any) => {
       class="bg-gray-200 w-full p-8 text-center text-sm text-gray-700 flex flex-col items-center gap-y-7"
     >
       <div class="font-semibold text-gray-700">Powered by:</div>
-      <div class="flex flex-row items-center gap-x-20">
+      <div class="flex flex-row items-center gap-x-10">
         <img :src="inform_logo" alt="Logo" class="h-16" />
         <img :src="dsi_logo" alt="Logo" class="h-16" />
+        <img :src="ceri_logo" alt="Logo" class="h-16" />
+        <img :src="comp2bio_logo" alt="Logo" class="h-16" />
       </div>
       <div class="flex flex-col items-center space-y-2">
         <a
